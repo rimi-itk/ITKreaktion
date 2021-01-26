@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Share'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ event.title }}</h1>
+
+    {% set url = url('event_show', {id: event.id}) %}
+
+    <a href="{{ url }}">{{ url }}</a>
+{% endblock %}
