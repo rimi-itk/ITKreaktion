@@ -1,14 +1,11 @@
+import './show.scss'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 
 const http = require('http')
 
 const App = ({ reactions, reactUrl }) => {
-    // const eventSource = new EventSource(eventSourceUrl)
-    // eventSource.onmessage = event => {
-    //     console.log('event', event)
-    // }
-    //
     const handleClick = (reaction) => {
         const requestOptions = {
             method: 'POST',
@@ -26,6 +23,7 @@ const App = ({ reactions, reactUrl }) => {
         <>
             {reactions.map((reaction) => (
                 <button
+                    className="btn btn-primary btn-block"
                     key={reaction.id}
                     type="button"
                     onClick={() => handleClick(reaction)}

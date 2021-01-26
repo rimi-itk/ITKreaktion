@@ -3,8 +3,14 @@
 {% block title %}{{ 'Show'|trans }}{% endblock %}
 
 {% block body %}
-    {% set reactions = event.reactions|map(reaction => { id: reaction.id }) %}
-    <div id="app" data-options="{{ options|merge({reactions: reactions})|json_encode }}">#app</div>
+    <div class="container-fluid">
+        {% set reactions = event.reactions|map(reaction => { id: reaction.id }) %}
+        <div id="app" data-options="{{ options|merge({reactions: reactions})|json_encode }}">#app</div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('event/show') }}
 {% endblock %}
 
 {% block javascripts %}
