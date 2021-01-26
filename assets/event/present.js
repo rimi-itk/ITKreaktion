@@ -1,3 +1,5 @@
+import './present.scss'
+
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { useSSE, SSEProvider } from 'react-hooks-sse'
@@ -23,7 +25,11 @@ const Component = ({ reactions }) => {
     return (
         <>
             {stuff.map((reaction) => (
-                <div key={reaction.id}>
+                <div
+                    key={reaction.id}
+                    className="alert alert-primary"
+                    role="alert"
+                >
                     {reaction.id}: {reaction.count}
                 </div>
             ))}
