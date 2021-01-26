@@ -27,9 +27,7 @@ class EventController extends AbstractController
 
     private function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired([
-            'eventSourceUrl',
-        ]);
+        $resolver->setRequired(['eventSourceUrl']);
     }
     /**
      * @Route("/", name="event")
@@ -46,9 +44,14 @@ class EventController extends AbstractController
     {
         return $this->render('event/show.html.twig', [
             'event' => $event,
-            'options' => [
-                'reactUrl' => $this->generateUrl('event_react', ['id' => $event->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
-            ]+$this->options,
+            'options' =>
+                [
+                    'reactUrl' => $this->generateUrl(
+                        'event_react',
+                        ['id' => $event->getId()],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    ),
+                ] + $this->options,
         ]);
     }
 
@@ -67,7 +70,8 @@ class EventController extends AbstractController
      */
     public function present(Event $event, string $code): Response
     {
-        $this->options['eventSourceUrl'] .= '?'.http_build_query(['topic' => 'event:'.$event->getId()]);
+        $this->options['eventSourceUrl'] .=
+            '?' . http_build_query(['topic' => 'event:' . $event->getId()]);
 
         return $this->render('event/present.html.twig', [
             'event' => $event,
@@ -78,14 +82,14 @@ class EventController extends AbstractController
     /**
      * @Route("/{id}/react", name="event_react", methods={"POST"})
      */
-    public function react(Request $request, Event $event, PublisherInterface $publisher): Response
-    {
+    public function react(
+        Request $request,
+        Event $event,
+        PublisherInterface $publisher
+    ): Response {
         $data = json_decode((string) $request->getContent());
 
-        $update = new Update(
-            'event:'.$event->getId(),
-            json_encode($data),
-        );
+        $update = new Update('event:' . $event->getId(), json_encode($data));
 
         $publisher($update);
 

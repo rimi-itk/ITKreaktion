@@ -19,17 +19,20 @@ class DashboardController extends AbstractDashboardController
     {
         $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
 
-        return $this->redirect($routeBuilder->setController(EventCrudController::class)->generateUrl());
+        return $this->redirect(
+            $routeBuilder
+                ->setController(EventCrudController::class)
+                ->generateUrl()
+        );
     }
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()
-            ->setTitle($this->getParameter('app_title'));
+        return Dashboard::new()->setTitle($this->getParameter('app_title'));
     }
 
     public function configureMenuItems(): iterable
     {
-         yield MenuItem::linkToCrud('Event', 'fas fa-list', Event::class);
+        yield MenuItem::linkToCrud('Event', 'fas fa-list', Event::class);
     }
 }

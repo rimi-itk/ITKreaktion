@@ -8,8 +8,8 @@ docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interact
 docker-compose exec phpfpm chown -R daemon /app/var
 ```
 
-
 https://mercure.rocks/docs/hub/install#docker-image
+
 ```sh
 docker run \
     -e JWT_KEY='!ChangeMe!' \
@@ -21,3 +21,15 @@ docker run \
 ```
 
 Go to <http://0.0.0.0:8880/>.
+
+## Coding standards
+
+We use [Prettier](https://prettier.io/).
+
+```sh
+yarn coding-standard-check
+```
+
+```sh
+yarn coding-standard-apply
+```

@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const App = ({eventSourceUrl}) => {
+const App = ({ eventSourceUrl }) => {
     const eventSource = new EventSource(eventSourceUrl)
-    eventSource.onmessage = event => {
+    eventSource.onmessage = (event) => {
         console.log('event', event)
     }
 
@@ -13,7 +13,4 @@ const App = ({eventSourceUrl}) => {
 const el = document.getElementById('app')
 const options = JSON.parse(el.dataset.options || '{}')
 
-ReactDOM.render(
-    <App {...options} />,
-    el
-)
+ReactDOM.render(<App {...options} />, el)

@@ -22,18 +22,19 @@ class EventCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        return [
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
+        return [TextField::new('title'), TextEditorField::new('description')];
     }
 
     public function configureActions(Actions $actions): Actions
     {
-        $share = Action::new('Share')
-            ->linkToCrudAction('shareEvent', fn (Event $event) => ['id' => $event->getId()]);
-        $present = Action::new('Present')
-            ->linkToCrudAction('presentEvent', fn (Event $event) => ['id' => $event->getId()]);
+        $share = Action::new('Share')->linkToCrudAction(
+            'shareEvent',
+            fn(Event $event) => ['id' => $event->getId()]
+        );
+        $present = Action::new('Present')->linkToCrudAction(
+            'presentEvent',
+            fn(Event $event) => ['id' => $event->getId()]
+        );
 
         return $actions
             ->disable(Action::DELETE)
@@ -52,6 +53,9 @@ class EventCrudController extends AbstractCrudController
     {
         $event = $context->getEntity()->getInstance();
 
-        return $this->redirectToRoute('event_present', ['id' => $event->getId(), 'code' => $event->getCode()]);
+        return $this->redirectToRoute('event_present', [
+            'id' => $event->getId(),
+            'code' => $event->getCode(),
+        ]);
     }
 }
