@@ -15,6 +15,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventController extends AbstractController
 {
+    /**
+     * @var array
+     */
     private $options;
 
     public function __construct(array $eventControllerOptions)
@@ -90,7 +93,9 @@ class EventController extends AbstractController
         $data = json_decode((string) $request->getContent());
 
         $update = new Update('event:' . $event->getId(), json_encode($data));
+        $publisher($update);
 
+        $update = new Update('reaction', json_encode($data));
         $publisher($update);
 
         return new JsonResponse($data);

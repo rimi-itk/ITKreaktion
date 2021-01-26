@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -33,9 +35,15 @@ class Event
      */
     private $code;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Reaction::class, inversedBy="events")
+     */
+    private $reactions;
+
     public function __construct()
     {
         $this->code = Uuid::v1();
+        $this->reactions = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -75,6 +83,27 @@ class Event
     public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getReactions(): Collection
+    {
+        return $this->reactions;
+    }
+
+    public function addReaction(Reaction $reaction): self
+    {
+        if (!$this->reactions->contains($reaction)) {
+            $this->reactions[] = $reaction;
+        }
+
+        return $this;
+    }
+
+    public function removeReaction(Reaction $reaction): self
+    {
+        $this->reactions->removeElement($reaction);
 
         return $this;
     }

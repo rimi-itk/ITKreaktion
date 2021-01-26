@@ -3,32 +3,37 @@ import ReactDOM from 'react-dom'
 
 const http = require('http')
 
-const App = ({ reactUrl }) => {
+const App = ({ reactions, reactUrl }) => {
     // const eventSource = new EventSource(eventSourceUrl)
     // eventSource.onmessage = event => {
     //     console.log('event', event)
     // }
     //
-    const handleClick = (stuff) => {
+    const handleClick = (reaction) => {
         const requestOptions = {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ stuff }),
+            body: JSON.stringify({ reaction }),
         }
         fetch(reactUrl, requestOptions)
             .then((response) => response.json())
             .then((data) => console.log(data))
 
-        console.log('handleClick', stuff)
+        console.log('handleClick', reaction)
     }
 
     return (
-        <pre>
-            <button type="button" onClick={() => handleClick('boo')}>
-                Click
-            </button>{' '}
-            {reactUrl}
-        </pre>
+        <>
+            {reactions.map((reaction) => (
+                <button
+                    key={reaction.id}
+                    type="button"
+                    onClick={() => handleClick(reaction)}
+                >
+                    {reaction.id}
+                </button>
+            ))}
+        </>
     )
 }
 
