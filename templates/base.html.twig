@@ -10,7 +10,7 @@
     </head>
     <body>
         {% block body %}
-            <div class="container-fluid">
+            <div class="{% block content_wrapper_class %}container{% endblock %}">
                 {% block flash_message %}
                     {% for label, messages in app.flashes %}
                         {% for message in messages %}

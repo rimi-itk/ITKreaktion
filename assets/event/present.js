@@ -2,8 +2,8 @@ import './present.scss'
 
 const audioFiles = {
     aww: require('../audio/studio-audience-awwww-sound-fx.mp3'),
-    clap: require('../audio/applause2.mp3'),
-    boo: require('../audio/boo2.mp3'),
+    clap: require('../audio/applause2.wav'),
+    boo: require('../audio/boo2.wav'),
     laugh: require('../audio/laughter-2.mp3'),
 }
 

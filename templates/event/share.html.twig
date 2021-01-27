@@ -2,30 +2,58 @@
 
 {% block title %}{{ 'Share'|trans }}{% endblock %}
 
+{% macro delimiter(text = null) %}
+    <div class="row">
+        <div class="col"><hr/></div>
+        <div class="col-auto">{{ text|default('or'|trans) }}</div>
+        <div class="col"><hr/></div>
+    </div>
+{% endmacro %}
+
 {% block content %}
-    <h1>{{ event.title }}</h1>
+    {% set event_url = url('event_show', {code: event.code}) %}
 
-    {% if event.description|default(false) %}
-        <p class="description">{{ event.description }}</p>
-    {% endif %}
-
-    {% set url = url('event_show', {code: event.code}) %}
-
-    <div class"">
-        Scan this QR code
-        <img src="{{ qr_code_url(url) }}" />
+    <div class="card text-center">
+        <div class="card-body">
+            <h1 class="card-title">{{ event.title }}</h1>
+            {% if event.description|default(false) %}
+                <div class="card-body">
+                    <p class="lead">
+                        {{ event.description }}
+                    </p>
+                </div>
+            {% endif %}
+        </div>
     </div>
 
-    or
+    <div class="text-center mt-3">
+        <h2>{{ 'Scan'|trans }}</h2>
 
-    <div class="">
-        Go to <a href="{{ url('event_show', {code: event.code}) }}">{{ url('event_show', {code: event.code}) }}</a>
+        <a href="{{ event_url }}">
+            <img src="{{ qr_code_url(event_url) }}" />
+        </a>
     </div>
 
-    or
+    {{ _self.delimiter() }}
 
-    <div class="">
-        Go to <a href="{{ url('event') }}">{{ url('event') }}</a> and
-        {{ 'Enter the code' }} <a href="{{ url('event', {code: event.code})}}">{{ event.code }}</a>.
+    <div class="text-center mt-3">
+        <h2>{{ 'Go'|trans }}</h2>
+
+        <a href="{{ event_url }}">{{ event_url }}</a>
     </div>
+
+    {{ _self.delimiter() }}
+
+    <div class="text-center mt-3">
+        <h2>{{ 'Enter'|trans }}</h2>
+        {% set url = url('event') %}
+        {{ '%code% on %link%'|trans({
+            '%link%': '<a href="'~url~'">'~url~'</a>',
+            '%code%': '<a href="'~url('event', {code: event.code})~'">'~event.code~'</a>'
+        })|raw }}
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('event/index') }}
 {% endblock %}
