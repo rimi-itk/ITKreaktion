@@ -15,7 +15,10 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
             ->setCode('123456')
             ->setTitle('Test event')
             ->setDescription('This is a test')
-            ->addReaction($this->getReference('reaction:clap'));
+            ->addReaction($this->getReference('reaction:clap'))
+            ->addReaction($this->getReference('reaction:laugh'))
+            ->addReaction($this->getReference('reaction:aww'))
+            ->addReaction($this->getReference('reaction:boo'));
         $manager->persist($event);
 
         $event = (new Event())

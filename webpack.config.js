@@ -63,11 +63,23 @@ Encore
     // uncomment if you use React
     .enableReactPreset()
 
-// uncomment to get integrity="..." attributes on your script & link tags
-// requires WebpackEncoreBundle 1.4 or higher
-//.enableIntegrityHashes(Encore.isProduction())
+    // uncomment to get integrity="..." attributes on your script & link tags
+    // requires WebpackEncoreBundle 1.4 or higher
+    //.enableIntegrityHashes(Encore.isProduction())
 
-// uncomment if you're having problems with a jQuery plugin
-//.autoProvidejQuery()
+    // uncomment if you're having problems with a jQuery plugin
+    //.autoProvidejQuery()
+
+    .addLoader({
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
+        use: [
+            {
+                loader: 'file-loader',
+                options: {
+                    name: '[path][name].[ext]',
+                },
+            },
+        ],
+    })
 
 module.exports = Encore.getWebpackConfig()

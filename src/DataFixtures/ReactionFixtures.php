@@ -10,7 +10,7 @@ class ReactionFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        foreach (['clap', 'laugh', 'aww'] as $id) {
+        foreach (['clap', 'laugh', 'aww', 'boo'] as $id) {
             $reaction = (new Reaction())->setId($id);
             $this->addReference('reaction:' . $id, $reaction);
             $manager->persist($reaction);
