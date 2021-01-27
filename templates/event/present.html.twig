@@ -2,11 +2,13 @@
 
 {% block title %}{{ 'Present'|trans }}{% endblock %}
 
-{% block body %}
+{% block content %}
     <div class="container-fluid">
         {% set reactions = event.reactions|map(reaction => { id: reaction.id }) %}
         <div id="app" data-options="{{ options|merge({reactions: reactions})|json_encode }}">#app</div>
     </div>
+
+    <a class="btn btn-secondary" href="{{ path('event_share', {code: event.code}) }}">{{ 'Share this event' }}</a>
 {% endblock %}
 
 {% block stylesheets %}

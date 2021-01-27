@@ -6,10 +6,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         {% block stylesheets %}{% endblock %}
-        <title>{% block title %}{% endblock %}</title>
+        <title>{% block title %}{{ site_name }}{% endblock %}</title>
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+            <div class="container-fluid">
+                {% block flash_message %}
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
+
+                {% block content %}{% endblock %}
+            </div>
+        {% endblock %}
 
         {% block javascripts %}{% endblock %}
     </body>

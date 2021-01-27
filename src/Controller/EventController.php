@@ -3,7 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +16,7 @@ use Symfony\Component\Mercure\Update;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EventController extends AbstractController
 {
@@ -35,13 +40,45 @@ class EventController extends AbstractController
     /**
      * @Route("/", name="event")
      */
-    public function index(): Response
-    {
-        return $this->render('event/index.html.twig');
+    public function index(
+        Request $request,
+        EventRepository $eventRepository,
+        TranslatorInterface $translator
+    ): Response {
+        $form = $this->createFormBuilder($request->query->all())
+            ->add('code', TextType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => $translator->trans('Enter'),
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $code = $form->getData()['code'] ?? null;
+            $event = $eventRepository->findOneBy([
+                'code' => $form->getData()['code'],
+            ]);
+            if (null !== $event) {
+                return $this->redirectToRoute('event_show', [
+                    'code' => $event->getCode(),
+                ]);
+            }
+
+            $this->addFlash(
+                'danger',
+                $translator->trans('Invalid event code: %code%', [
+                    '%code%' => $code,
+                ])
+            );
+        }
+
+        return $this->render('event/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
-     * @Route("/{id}", name="event_show")
+     * @Route("/{code}", name="event_show")
      */
     public function show(Event $event): Response
     {
@@ -51,7 +88,7 @@ class EventController extends AbstractController
                 [
                     'reactUrl' => $this->generateUrl(
                         'event_react',
-                        ['id' => $event->getId()],
+                        ['code' => $event->getCode()],
                         UrlGeneratorInterface::ABSOLUTE_URL
                     ),
                 ] + $this->options,
@@ -59,7 +96,7 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/share", name="event_share")
+     * @Route("/{code}/share", name="event_share")
      */
     public function share(Event $event): Response
     {
@@ -69,7 +106,7 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/present/{code}", name="event_present")
+     * @Route("/{code}/present/{id}", name="event_present")
      */
     public function present(Event $event, string $code): Response
     {
@@ -83,7 +120,7 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/react", name="event_react", methods={"POST"})
+     * @Route("/{code}/react", name="event_react", methods={"POST"})
      */
     public function react(
         Request $request,

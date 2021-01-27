@@ -24,6 +24,7 @@ class EventCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            TextField::new('code')->hideOnForm(),
             TextField::new('title'),
             TextEditorField::new('description'),
             AssociationField::new('reactions'),
@@ -51,7 +52,9 @@ class EventCrudController extends AbstractCrudController
     {
         $event = $context->getEntity()->getInstance();
 
-        return $this->redirectToRoute('event_share', ['id' => $event->getId()]);
+        return $this->redirectToRoute('event_share', [
+            'code' => $event->getCode(),
+        ]);
     }
 
     public function presentEvent(AdminContext $context): Response
@@ -59,8 +62,8 @@ class EventCrudController extends AbstractCrudController
         $event = $context->getEntity()->getInstance();
 
         return $this->redirectToRoute('event_present', [
-            'id' => $event->getId(),
             'code' => $event->getCode(),
+            'id' => $event->getId(),
         ]);
     }
 }

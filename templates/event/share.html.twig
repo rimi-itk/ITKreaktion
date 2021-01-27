@@ -2,10 +2,30 @@
 
 {% block title %}{{ 'Share'|trans }}{% endblock %}
 
-{% block body %}
+{% block content %}
     <h1>{{ event.title }}</h1>
 
-    {% set url = url('event_show', {id: event.id}) %}
+    {% if event.description|default(false) %}
+        <p class="description">{{ event.description }}</p>
+    {% endif %}
 
-    <a href="{{ url }}">{{ url }}</a>
+    {% set url = url('event_show', {code: event.code}) %}
+
+    <div class"">
+        Scan this QR code
+        <img src="{{ qr_code_path(url) }}" />
+    </div>
+
+    or
+
+    <div class="">
+        Go to <a href="{{ url('event_show', {code: event.code}) }}">{{ url('event_show', {code: event.code}) }}</a>
+    </div>
+
+    or
+
+    <div class="">
+        Go to <a href="{{ url('event') }}">{{ url('event') }}</a> and
+        {{ 'Enter the code' }} <a href="{{ url('event', {code: event.code})}}">{{ event.code }}</a>.
+    </div>
 {% endblock %}

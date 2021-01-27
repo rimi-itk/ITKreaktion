@@ -23,7 +23,7 @@ const App = ({ reactions, reactUrl }) => {
         <>
             {reactions.map((reaction) => (
                 <button
-                    className="btn btn-primary btn-block"
+                    className="btn btn-primary btn-block btn-lg"
                     key={reaction.id}
                     type="button"
                     onClick={() => handleClick(reaction)}

@@ -6,10 +6,13 @@ use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass=EventRepository::class)
+ * @ORM\Table(
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="code_unique", columns={"code"})},
+ *     indexes={@ORM\Index(name="code_idx", columns={"code"})}
+ * )
  */
 class Event
 {
@@ -31,7 +34,7 @@ class Event
     private $description;
 
     /**
-     * @ORM\Column(type="guid")
+     * @ORM\Column(type="string", length=32)
      */
     private $code;
 
@@ -42,7 +45,6 @@ class Event
 
     public function __construct()
     {
-        $this->code = Uuid::v1();
         $this->reactions = new ArrayCollection();
     }
 
