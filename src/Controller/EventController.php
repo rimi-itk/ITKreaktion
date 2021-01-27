@@ -6,8 +6,7 @@ use App\Entity\Event;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,9 +45,15 @@ class EventController extends AbstractController
         TranslatorInterface $translator
     ): Response {
         $form = $this->createFormBuilder($request->query->all())
-            ->add('code', TextType::class)
+            ->add('code', TelType::class, [
+                'label' => $translator->trans('Enter your code'),
+                'attr' => [
+                    'placeholder' => '12 34 56',
+                    'autocomplete' => 'off',
+                ],
+            ])
             ->add('submit', SubmitType::class, [
-                'label' => $translator->trans('Enter'),
+                'label' => $translator->trans('Submit'),
             ])
             ->getForm();
 
@@ -56,7 +61,7 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $code = $form->getData()['code'] ?? null;
             $event = $eventRepository->findOneBy([
-                'code' => $form->getData()['code'],
+                'code' => preg_replace('/\s+/', '', $code),
             ]);
             if (null !== $event) {
                 return $this->redirectToRoute('event_show', [

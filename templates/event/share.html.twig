@@ -47,9 +47,10 @@
     <div class="text-center mt-3">
         <h2>{{ 'Enter'|trans }}</h2>
         {% set url = url('event') %}
+        {% set code = event.code|event_code_format %}
         {{ '%code% on %link%'|trans({
             '%link%': '<a href="'~url~'">'~url~'</a>',
-            '%code%': '<a href="'~url('event', {code: event.code})~'">'~event.code~'</a>'
+            '%code%': '<a href="'~url('event', {code: code})~'">'~code~'</a>'
         })|raw }}
     </div>
 {% endblock %}
