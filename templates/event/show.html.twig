@@ -3,9 +3,14 @@
 {% block title %}{{ 'Show'|trans }}{% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
-        {% set reactions = event.reactions|map(reaction => { id: reaction.id }) %}
-        <div id="app" data-options="{{ options|merge({reactions: reactions})|json_encode }}">#app</div>
+    <div class="page d-flex flex-column">
+        <div class="p-2">
+            <h1>{{ event.title }}</h1>
+        </div>
+        <div class="p-2 flex-grow-1">
+            {% set reactions = event.reactions|map(reaction => { id: reaction.id }) %}
+            <div id="app" data-options="{{ options|merge({reactions: reactions})|json_encode }}">{{ 'Loading app …'|trans }}</div>
+        </div>
     </div>
 {% endblock %}
 

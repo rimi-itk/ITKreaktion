@@ -20,18 +20,20 @@ const App = ({ reactions, reactUrl }) => {
     }
 
     return (
-        <>
+        <div class="reactions d-flex flex-column">
             {reactions.map((reaction) => (
-                <button
-                    className="btn btn-primary btn-block btn-lg"
-                    key={reaction.id}
-                    type="button"
-                    onClick={() => handleClick(reaction)}
-                >
-                    {reaction.id}
-                </button>
+                <div class="p-2 flex-fill">
+                    <button
+                        className="btn btn-primary btn-block btn-lg"
+                        key={reaction.id}
+                        type="button"
+                        onClick={() => handleClick(reaction)}
+                    >
+                        {reaction.id}
+                    </button>
+                </div>
             ))}
-        </>
+        </div>
     )
 }
 

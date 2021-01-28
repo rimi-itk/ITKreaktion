@@ -1,1 +1,16 @@
 @import '~bootstrap/scss/bootstrap';
+
+html,
+body,
+body > .container,
+.page,
+#app,
+.reactions {
+    height: 100%;
+}
+
+.reactions {
+    .btn-block {
+        height: 100%;
+    }
+}
