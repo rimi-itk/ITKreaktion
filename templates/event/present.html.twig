@@ -12,7 +12,10 @@
             <div id="app" data-options="{{ options|merge({reactions: reactions})|json_encode }}">#app</div>
         </div>
         <div class="p-2">
-            <a class="btn btn-secondary" href="{{ path('event_share', {code: event.code}) }}">{{ 'Share this event' }}</a>
+            <div class="alert alert-warning">
+                {% trans %}Do not share this page with anyone but from co-presenters. Use the “Share” button the get reactions from your audience.{% endtrans %}
+            </div>
+            <a class="btn btn-success btn-block" href="{{ path('event_share', {code: event.code}) }}">{{ 'Share “%event%” with your audience'|trans({'%event%': event.title }) }}</a>
         </div>
     </div>
 {% endblock %}
